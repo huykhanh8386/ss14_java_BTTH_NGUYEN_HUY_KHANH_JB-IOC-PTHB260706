@@ -1,0 +1,36 @@
+public class CinemaRoom {
+    private boolean[] bookedSeats = new boolean[10];
+  public void bookSeat(int seatNumber)
+            throws InvalidSeatException, SeatAlreadyBookedException {
+        if (seatNumber < 1 || seatNumber > 10) {
+            throw new InvalidSeatException( "Số ghế phải nằm trong khoảng 1 - 10!");
+        }
+        if (bookedSeats[seatNumber - 1]) {
+            throw new SeatAlreadyBookedException("Ghế số " + seatNumber + " đã có người đặt! Vui lòng chọn ghế khác." );
+        }
+        bookedSeats[seatNumber - 1] = true;
+        System.out.println( "-> ĐẶT VÉ THÀNH CÔNG! Ghế số "+ seatNumber+ " đã được giữ chỗ.");
+    }
+    public void displaySeats() {
+        for (int i = 0; i < bookedSeats.length; i++) {
+            if (bookedSeats[i]) {
+                System.out.printf("[%02d: ĐÃ ĐẶT] ", i + 1);
+            } else {
+                System.out.printf("[%02d: Trống] ",i + 1);
+            } 
+            if ((i + 1) % 5 == 0) {
+                System.out.println();
+            }
+        }
+    }
+    public int getBookedSeatCount() {
+        int count = 0;
+        for (boolean seat : bookedSeats) {
+            if (seat) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
