@@ -1,0 +1,63 @@
+import java.util.Scanner;
+
+public class CinemaBookingManager {
+    private CinemaRoom room = new CinemaRoom();
+    private Scanner sc = new Scanner(System.in);
+    private static final int TICKET_PRICE = 50000;
+    public void run() {
+        int choice = 0;
+        do {
+            showMenu();
+            try {
+                System.out.print("Chọn chức năng (1-4): ");
+                choice = Integer.parseInt( sc.nextLine() );
+                switch (choice) {
+                    case 1:
+                        room.displaySeats();
+                        break;
+                    case 2:
+                        bookTicket();
+                        break;
+                    case 3:
+                        showStatistics();
+                        break;
+                    case 4:
+                        System.out.println("Cảm ơn bạn đã sử dụng Rikkei Cinema!");
+                        break;
+                    default:
+                        System.out.println( "Vui lòng chọn từ 1 đến 4!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("LỖI: Bạn phải nhập một số!");
+            }
+        } while (choice != 4);
+    }
+    private void showMenu() {
+        System.out.println("1. Sơ đồ ghế");
+        System.out.println("2. Đặt vé");
+        System.out.println("3. Thống kê doanh thu");
+        System.out.println("4. Thoát");
+    }
+    private void bookTicket() {
+        try {
+            System.out.print(  "Nhập số ghế muốn đặt (1-10): ");
+            int seatNumber = Integer.parseInt(sc.nextLine());
+            room.bookSeat(seatNumber);
+        } catch (NumberFormatException e) {
+            System.out.println( "LỖI: Số ghế phải là số!");
+        } catch (InvalidSeatException e) {
+            System.out.println("LỖI PHÒNG VÉ: " + e.getMessage());
+        } catch (SeatAlreadyBookedException e) {
+            System.out.println("LỖI PHÒNG VÉ: " + e.getMessage());
+        } finally {
+            System.out.println("-> Đã hoàn tất xử lý yêu cầu đặt vé.");
+        }
+    }
+    private void showStatistics() {
+        int soldTickets = room.getBookedSeatCount();
+        int revenue =soldTickets * TICKET_PRICE;
+        System.out.println( "===== THỐNG KÊ RIKKEI CINEMA =====");
+        System.out.println("Số vé đã bán: " + soldTickets );
+        System.out.printf( "Doanh thu: %,d VNĐ%n", revenue);
+    }
+}
